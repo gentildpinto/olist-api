@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - 3306:3306
+    volumes:
+        - ./my.cnf:/etc/mysql/my.cnf
+        - ~/.container_storage/mysql:/var/lib/mysql
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "3"
