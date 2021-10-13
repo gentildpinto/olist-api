@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"os"
 
+	"github.com/gentildpinto/olist-api/app/helpers"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -13,7 +13,7 @@ import (
 func Initialize(version string) (err error) {
 	config := zap.NewProductionConfig()
 
-	if os.Getenv("ENVIRONMENT") != "production" || os.Getenv("DEBUG") == "true" {
+	if helpers.ViperEnvVariable("ENVIRONMENT") != "production" || helpers.ViperEnvVariable("DEBUG") == "true" {
 		config = zap.NewDevelopmentConfig()
 	}
 

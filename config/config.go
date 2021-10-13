@@ -1,13 +1,12 @@
 package config
 
 import (
-	"errors"
 	"fmt"
-	"os"
 
+	"github.com/gentildpinto/olist-api/app/helpers"
 	"github.com/gentildpinto/olist-api/config/logger"
-	"github.com/jinzhu/gorm"
-	"github.com/joho/godotenv"
+	"github.com/gentildpinto/olist-api/config/orm"
+	"gorm.io/gorm"
 )
 
 var (
@@ -19,8 +18,9 @@ var (
 )
 
 type (
-	Config struct {
-		Server *Server
+	Configuration struct {
+		Server   *Server
+		Database *Database
 	}
 
 	Server struct {
@@ -42,7 +42,7 @@ type (
 	}
 )
 
-func Initialize(appVersion string) (config *Config, err error) {
+func Initialize(appVersion string) (config *Configuration, err error) {
 	version = appVersion
 
 	err = logger.Initialize(version)
@@ -55,30 +55,41 @@ func Initialize(appVersion string) (config *Config, err error) {
 		return
 	}
 
-	if os.Getenv("APP_PORT") != "" {
-		appPort = os.Getenv("APP_PORT")
+	if helpers.ViperEnvVariable("APP_PORT") != "" {
+		appPort = helpers.ViperEnvVariable("APP_PORT")
 	}
+
+	config = &Configuration{
+		Server: &Server{
+			Port:         appPort,
+			Debug:        helpers.ViperEnvVariable("ENVIRONMENT") != "production" || helpers.ViperEnvVariable("DEBUG") == "true",
+			ReadTimeout:  60,
+			WriteTimeout: 60,
+		},
+		Database: &Database{
+			Host:         helpers.ViperEnvVariable("DB_HOST"),
+			Port:         helpers.ViperEnvVariable("DB_PORT"),
+			User:         helpers.ViperEnvVariable("DB_USERNAME"),
+			Password:     helpers.ViperEnvVariable("DB_PASSWORD"),
+			DatabaseName: helpers.ViperEnvVariable("DB_NAME"),
+			LogQueries:   helpers.ViperEnvVariable("ENVIRONMENT") != "production" || helpers.ViperEnvVariable("DEBUG") == "true",
+		},
+	}
+
+	config.Database.Db, err = orm.New(config.Database.User, config.Database.Password, config.Database.Host, config.Database.Port, config.Database.DatabaseName)
+
+	if err = logger.Log(err); err != nil {
+		return
+	}
+
 	return
 }
 
 func validateEnvironment() error {
-	if err := checkFileExists(".env"); err != nil {
-		if err = logger.Log(godotenv.Load()); err != nil {
-			return logger.Log("could not load env file")
-		}
-	}
-
 	for _, envVar := range envVars {
-		if os.Getenv(envVar) == "" {
+		if helpers.ViperEnvVariable(envVar) == "" {
 			return logger.Log(fmt.Errorf("missing environment variable: %s", envVar))
 		}
-	}
-	return nil
-}
-
-func checkFileExists(file string) error {
-	if _, err := os.Stat(file); os.IsNotExist(err) {
-		return errors.New(file + " does not exist")
 	}
 	return nil
 }
