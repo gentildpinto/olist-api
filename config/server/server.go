@@ -25,7 +25,7 @@ func New() *echo.Echo {
 	requestID := middleware.RequestIDConfig{Generator: requestIDGenerator}
 
 	e.Use(
-		middleware.LoggerWithConfig(middleware.LoggerConfig{Format: `[${time_rfc3339}] ${status} ${method} ${host}${path} ${latency_human}`}),
+		middleware.LoggerWithConfig(middleware.LoggerConfig{Format: "[${time_rfc3339}] ${status} ${method} ${host}${path} ${latency_human}\n"}),
 		middleware.Recover(), middleware.RequestIDWithConfig(requestID),
 	)
 
@@ -42,7 +42,7 @@ func Start(e *echo.Echo, config *Config) {
 	e.Debug = config.Debug
 
 	go func() {
-		if err := e.StartServer(srvr); err != nil {
+		if err := e.StartServer(srvr); err != nil && err != http.ErrServerClosed {
 			e.Logger.Fatal("shutting down the server", err)
 		}
 	}()
