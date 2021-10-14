@@ -14,6 +14,8 @@ func Start(config *config.Configuration) (err error) {
 
 	e := server.New()
 
+	initRoutes(e)
+
 	server.Start(e, &server.Config{
 		Port:         config.Server.Port,
 		ReadTimeout:  config.Server.ReadTimeout,
