@@ -1,6 +1,7 @@
 {
     "scripts": {
-        "start": "clear; killall ./bin/olist-api; go build -o bin/ && ./bin/olist-api",
+        "kill-server": "chmod +x ./bin/server-killer && ./bin/server-killer",
+        "start": "clear && yarn kill-server && go build -o bin/ && ./bin/olist-api",
         "watch": "./node_modules/.bin/nodemon --exec 'yarn start'"
     },
     "devDependencies": {
