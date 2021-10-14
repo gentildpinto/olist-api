@@ -3,11 +3,17 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/labstack/echo/v4"
+	echo "github.com/labstack/echo/v4"
 )
 
-func Welcome() echo.HandlerFunc {
+type welcomeController struct{}
+
+var Welcome welcomeController
+
+func (welcomeController) Index() echo.HandlerFunc {
 	return func(c echo.Context) error {
-		return c.String(http.StatusOK, "Welcome")
+		return c.JSON(http.StatusOK, map[string]interface{}{
+			"message": "Welcome to Olist-API! :) <3",
+		})
 	}
 }
