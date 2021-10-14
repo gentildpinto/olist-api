@@ -26,7 +26,7 @@ func ViperEnvVariable(key string) string {
 	// to get the underlying type of the key,
 	// we have to do the type assertion, we know the underlying value is string
 	// if we type assert to other type it will throw an error
-	value, ok := viper.Get(key).(string)
+	value, ok := viper.Get(string(key)).(string)
 
 	// If the type is a string then ok will be true
 	// ok will make sure the program not break
