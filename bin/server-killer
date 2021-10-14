@@ -1,0 +1,3 @@
+#!/bin/bash
+pkill -9 -f olist-api
+exit 0
