@@ -1,6 +1,0 @@
-{
-    "ignore": ["node_modules", "bin"],
-    "watch": ["app", "config"],
-    "ext": "go"
-}
-  
