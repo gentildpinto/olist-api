@@ -29,11 +29,15 @@ require (
 require (
 	github.com/ClickHouse/clickhouse-go v1.4.5 // indirect
 	github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58 // indirect
+	github.com/cosmtrek/air v1.27.3 // indirect
+	github.com/creack/pty v1.1.11 // indirect
 	github.com/denisenkom/go-mssqldb v0.10.0 // indirect
+	github.com/fatih/color v1.10.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang-sql/civil v0.0.0-20190719163853-cb61b32ac6fe // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/imdario/mergo v0.3.12 // indirect
 	github.com/lib/pq v1.10.2 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mattn/go-sqlite3 v1.14.8 // indirect
