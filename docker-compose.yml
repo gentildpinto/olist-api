@@ -1,19 +1,31 @@
 version: "3.8"
 services:
-  mysql:
-    image: mysql:5.7
-    container_name: mysql
-    restart: always
+  database:
+    image: mysql:5.7.35
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_HOST: "%"
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    restart: on-failure
     ports:
       - 3306:3306
     volumes:
-        - ./my.cnf:/etc/mysql/my.cnf
-        - ~/.container_storage/mysql:/var/lib/mysql
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10M"
-        max-file: "3"
+      - olist-data:/var/lib/mysql
+    container_name: olist-api-db
+
+  app:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    container_name: app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    volumes:
+      - ./:/app
+    
+
+# persisted storage
+volumes:
+  olist-data:
