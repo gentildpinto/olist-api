@@ -3,50 +3,30 @@ services:
   database:
     image: mysql:5.7.35
     container_name: olist-database
-    networks:
-      - olist/backend
     environment:
       - MYSQL_PASSWORD=${DB_PASSWORD}
       - MYSQL_DATABASE=${DB_NAME}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-    restart: on-failure
+    restart: always
     ports:
       - 3306:3306
     volumes:
       - olist-data:/var/lib/mysql
-  
-  migrator:
-    build:
-      context: ./migrator
-      dockerfile: Dockerfile
-    image: olist/migrator
-    networks:
-      - olist/backend
-    volumes:
-      - ./migrator:/migrator
-    links:
-      - database
 
   app:
     build:
       context: .
       dockerfile: dev.Dockerfile
     image: olist/app
-    container_name: app
-    networks:
-      - olist/backend
+    container_name: olist-app
     ports:
       - "8000:8000"
     depends_on:
       - database
     volumes:
       - ./:/app
-    
+    restart: always    
 
 # persisted storage
 volumes:
   olist-data:
-
-networks:
-  olist/backend:
-    name: olist/backend
