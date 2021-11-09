@@ -30,5 +30,5 @@ services:
     restart: always    
 
 # persisted storage
-volumes:
-  olist-data:
+# volumes:
+#   olist-data:
