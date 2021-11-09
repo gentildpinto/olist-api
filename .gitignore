@@ -17,3 +17,5 @@ vendor/
 
 # sensitive files
 .env
+database/docker/data/*
+!database/docker/data/.keep
