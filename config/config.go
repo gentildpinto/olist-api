@@ -2,8 +2,8 @@ package config
 
 import (
 	"fmt"
+	"os"
 
-	"github.com/gentildpinto/olist-api/app/helpers"
 	"github.com/gentildpinto/olist-api/config/logger"
 	"github.com/gentildpinto/olist-api/config/orm"
 	"gorm.io/gorm"
@@ -55,24 +55,24 @@ func Initialize(appVersion string) (config *Configuration, err error) {
 		return
 	}
 
-	if helpers.ViperEnvVariable("APP_PORT") != "" {
-		appPort = helpers.ViperEnvVariable("APP_PORT")
+	if os.Getenv("APP_PORT") != "" {
+		appPort = os.Getenv("APP_PORT")
 	}
 
 	config = &Configuration{
 		Server: &Server{
 			Port:         appPort,
-			Debug:        helpers.ViperEnvVariable("ENVIRONMENT") != "production" || helpers.ViperEnvVariable("DEBUG") == "true",
+			Debug:        os.Getenv("ENVIRONMENT") != "production" || os.Getenv("DEBUG") == "true",
 			ReadTimeout:  60,
 			WriteTimeout: 60,
 		},
 		Database: &Database{
-			Host:         helpers.ViperEnvVariable("DB_HOST"),
-			Port:         helpers.ViperEnvVariable("DB_PORT"),
-			User:         helpers.ViperEnvVariable("DB_USERNAME"),
-			Password:     helpers.ViperEnvVariable("DB_PASSWORD"),
-			DatabaseName: helpers.ViperEnvVariable("DB_NAME"),
-			LogQueries:   helpers.ViperEnvVariable("ENVIRONMENT") != "production" || helpers.ViperEnvVariable("DEBUG") == "true",
+			Host:         os.Getenv("DB_HOST"),
+			Port:         os.Getenv("DB_PORT"),
+			User:         os.Getenv("DB_USERNAME"),
+			Password:     os.Getenv("DB_PASSWORD"),
+			DatabaseName: os.Getenv("DB_NAME"),
+			LogQueries:   os.Getenv("ENVIRONMENT") != "production" || os.Getenv("DEBUG") == "true",
 		},
 	}
 
@@ -87,7 +87,7 @@ func Initialize(appVersion string) (config *Configuration, err error) {
 
 func validateEnvironment() error {
 	for _, envVar := range envVars {
-		if helpers.ViperEnvVariable(envVar) == "" {
+		if os.Getenv(envVar) == "" {
 			return logger.Log(fmt.Errorf("missing environment variable: %s", envVar))
 		}
 	}
