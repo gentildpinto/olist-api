@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gentildpinto/olist-api/config/database"
 	"github.com/gentildpinto/olist-api/config/logger"
-	"github.com/gentildpinto/olist-api/config/orm"
 	"gorm.io/gorm"
 )
 
@@ -76,7 +76,7 @@ func Initialize(appVersion string) (config *Configuration, err error) {
 		},
 	}
 
-	config.Database.Db, err = orm.New(config.Database.User, config.Database.Password, config.Database.Host, config.Database.Port, config.Database.DatabaseName)
+	config.Database.Db, err = database.New(config.Database.User, config.Database.Password, config.Database.Host, config.Database.Port, config.Database.DatabaseName)
 
 	if err = logger.Log(err); err != nil {
 		return

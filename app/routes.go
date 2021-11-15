@@ -6,9 +6,13 @@ import (
 )
 
 var (
-	welcome = controllers.Welcome
+	welcome_controller = controllers.Welcome
+	author_controller  = controllers.Author
 )
 
 func initRoutes(e *echo.Echo) {
-	e.GET("/", welcome.Index())
+	e.GET("/", welcome_controller.Index())
+
+	// authors
+	e.GET("/authors", author_controller.Index())
 }
