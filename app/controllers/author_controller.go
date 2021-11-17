@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/gentildpinto/olist-api/app/model/author"
+	"github.com/gentildpinto/olist-api/app/model"
 	"github.com/labstack/echo/v4"
 )
 
@@ -12,7 +12,7 @@ var Author = struct {
 }{
 	Index: func() echo.HandlerFunc {
 		return func(c echo.Context) error {
-			authors, err := author.GetAll()
+			authors, err := (model.Author{}).All()
 
 			if err != nil {
 				return err
