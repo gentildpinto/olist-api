@@ -90,3 +90,12 @@ func (field *UUID) Scan(value interface{}) (err error) {
 func (field UUID) Value() (driver.Value, error) {
 	return uuid.UUID(field).MarshalBinary()
 }
+
+func ParseUUID(id string) UUID {
+	return UUID(uuid.MustParse(id))
+}
+
+func UUIDToBIN(s string) ([]byte, error) {
+	id, err := uuid.UUID(ParseUUID(s)).MarshalBinary()
+	return id, err
+}
