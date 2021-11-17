@@ -19,4 +19,5 @@ func initRoutes(e *echo.Echo) {
 
 	// books
 	e.GET("/books", book_controller.Index())
+	e.POST("/books", book_controller.Create())
 }
