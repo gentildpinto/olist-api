@@ -16,7 +16,7 @@ func (Author) All() (authors []Author, err error) {
 	return
 }
 
-func FindAuthorByID(id UUID) (author Author, err error) {
+func (Author) FindByID(id UUID) (author Author, err error) {
 	if err = logger.Log(databaseConnection.First(&author, id).Error); err != nil {
 		return Author{}, err
 	}
