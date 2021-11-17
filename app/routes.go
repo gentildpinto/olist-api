@@ -8,6 +8,7 @@ import (
 var (
 	welcome_controller = controllers.Welcome
 	author_controller  = controllers.Author
+	book_controller    = controllers.Book
 )
 
 func initRoutes(e *echo.Echo) {
@@ -15,4 +16,7 @@ func initRoutes(e *echo.Echo) {
 
 	// authors
 	e.GET("/authors", author_controller.Index())
+
+	// books
+	e.GET("/books", book_controller.Index())
 }
