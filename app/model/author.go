@@ -1,7 +1,7 @@
 package model
 
 type Author struct {
-	base
+	Base
 	Name string `json:"name" gorm:"unique"`
 }
 

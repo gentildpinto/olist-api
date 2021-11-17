@@ -17,7 +17,7 @@ var (
 type (
 	UUID uuid.UUID
 
-	base struct {
+	Base struct {
 		ID        UUID           `json:"id" gorm:"primary_key;default:(UUID_TO_BIN(UUID()))"`
 		CreatedAt time.Time      `json:"-"`
 		UpdatedAt time.Time      `json:"-"`
