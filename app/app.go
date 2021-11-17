@@ -1,14 +1,14 @@
 package app
 
 import (
-	"github.com/gentildpinto/olist-api/app/model/author"
+	"github.com/gentildpinto/olist-api/app/model"
 	"github.com/gentildpinto/olist-api/config"
 	"github.com/gentildpinto/olist-api/config/logger"
 	"github.com/gentildpinto/olist-api/config/server"
 )
 
 func Start(config *config.Configuration) (err error) {
-	if err = logger.Log(author.Initialize(config.Database.Db)); err != nil {
+	if err = logger.Log(model.Initialize(config.Database.Db)); err != nil {
 		return
 	}
 
