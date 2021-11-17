@@ -5,6 +5,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/gentildpinto/olist-api/config/logger"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -18,21 +19,42 @@ type (
 	UUID uuid.UUID
 
 	Base struct {
-		ID        UUID           `json:"id" gorm:"primary_key;default:(UUID_TO_BIN(UUID()))"`
+		ID        UUID           `json:"id" gorm:"primary_key;"`
 		CreatedAt time.Time      `json:"-"`
 		UpdatedAt time.Time      `json:"-"`
 		DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 	}
 )
 
-func Initialize(dbConn *gorm.DB) error {
+func (b *Base) BeforeCreate(tx *gorm.DB) error {
+	id, err := uuid.NewRandom()
+	b.ID = UUID(id)
+	return err
+}
+
+func Initialize(dbConn *gorm.DB) (err error) {
 	if dbConn == nil {
 		return ErrNilDatabase
 	}
 
 	databaseConnection = dbConn
 
-	return nil
+	if err = logger.Log(setupJoinTables(databaseConnection)); err != nil {
+		return
+	}
+
+	return
+}
+
+func setupJoinTables(db *gorm.DB) (err error) {
+	if err = logger.Log(db.SetupJoinTable(&Author{}, "Books", &AuthorBook{})); err != nil {
+		return
+	}
+	if err = logger.Log(db.SetupJoinTable(&Book{}, "Authors", &AuthorBook{})); err != nil {
+		return
+	}
+
+	return
 }
 
 func (field UUID) String() string {
