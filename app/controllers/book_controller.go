@@ -9,8 +9,9 @@ import (
 )
 
 var Book = struct {
-	Index  func() echo.HandlerFunc
-	Create func() echo.HandlerFunc
+	Index    func() echo.HandlerFunc
+	Create   func() echo.HandlerFunc
+	FindByID func() echo.HandlerFunc
 }{
 	Index: func() echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -38,6 +39,19 @@ var Book = struct {
 			}
 
 			return c.JSON(http.StatusCreated, newBook)
+		}
+	},
+	FindByID: func() echo.HandlerFunc {
+		return func(c echo.Context) error {
+			id := c.Param("id")
+
+			book, err := book.FindByID(id)
+
+			if err != nil {
+				return err
+			}
+
+			return c.JSON(http.StatusOK, book)
 		}
 	},
 }

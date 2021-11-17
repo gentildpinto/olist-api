@@ -38,3 +38,9 @@ func Create(b dto.Book) (newBook model.Book, err error) {
 
 	return
 }
+
+func FindByID(id string) (book model.Book, err error) {
+	book, err = (model.Book{}).FindByID(id)
+
+	return
+}

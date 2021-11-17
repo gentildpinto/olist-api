@@ -25,3 +25,12 @@ func (b *Book) Create() (err error) {
 
 	return
 }
+
+func (Book) FindByID(id string) (book Book, err error) {
+	uuid, _ := UUIDToBIN(id)
+
+	if err = logger.Log(databaseConnection.Preload("Authors").First(&book, "id = ?", uuid).Error); err != nil {
+		return Book{}, err
+	}
+	return
+}
