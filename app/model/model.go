@@ -2,22 +2,38 @@ package model
 
 import (
 	"database/sql/driver"
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
+var (
+	databaseConnection *gorm.DB
+	ErrNilDatabase     error = errors.New("database connection is nil")
+)
+
 type (
 	UUID uuid.UUID
 
-	Base struct {
+	base struct {
 		ID        UUID           `json:"id" gorm:"primary_key;default:(UUID_TO_BIN(UUID()))"`
 		CreatedAt time.Time      `json:"-"`
 		UpdatedAt time.Time      `json:"-"`
 		DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 	}
 )
+
+func Initialize(dbConn *gorm.DB) error {
+	if dbConn == nil {
+		return ErrNilDatabase
+	}
+
+	databaseConnection = dbConn
+
+	return nil
+}
 
 func (field UUID) String() string {
 	return uuid.UUID(field).String()
