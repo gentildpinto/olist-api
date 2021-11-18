@@ -62,3 +62,17 @@ func Update(id string, b dto.UpdateBook) (updatedBook model.Book, err error) {
 
 	return
 }
+
+func Delete(id string) (err error) {
+	book, err := (model.Book{}).FindByID(id)
+
+	if err != nil {
+		return err
+	}
+
+	if err = book.Delete(); err != nil {
+		return err
+	}
+
+	return
+}

@@ -22,4 +22,5 @@ func initRoutes(e *echo.Echo) {
 	e.POST("/books", book_controller.Create())
 	e.GET("/books/:id", book_controller.FindByID())
 	e.PUT("/books/:id", book_controller.Update())
+	e.DELETE("/books/:id", book_controller.Delete())
 }

@@ -13,6 +13,7 @@ var Book = struct {
 	Create   func() echo.HandlerFunc
 	FindByID func() echo.HandlerFunc
 	Update   func() echo.HandlerFunc
+	Delete   func() echo.HandlerFunc
 }{
 	Index: func() echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -71,6 +72,17 @@ var Book = struct {
 			}
 
 			return c.JSON(http.StatusOK, updatedBook)
+		}
+	},
+	Delete: func() echo.HandlerFunc {
+		return func(c echo.Context) error {
+			id := c.Param("id")
+
+			if err := book.Delete(id); err != nil {
+				return err
+			}
+
+			return c.NoContent(http.StatusOK)
 		}
 	},
 }

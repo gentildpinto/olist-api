@@ -42,3 +42,11 @@ func (b *Book) Update() (err error) {
 
 	return
 }
+
+func (b *Book) Delete() (err error) {
+	if err = logger.Log(databaseConnection.Delete(&b).Error); err != nil {
+		return
+	}
+
+	return
+}
