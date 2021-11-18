@@ -1,4 +1,4 @@
-package dto
+package payloads
 
 import "github.com/gentildpinto/olist-api/app/model"
 
@@ -11,8 +11,8 @@ type (
 	}
 
 	UpdateBook struct {
-		Name            string `json:"name,omitempty"`
-		Edition         string `json:"edition,omitempty"`
-		PublicationYear int    `json:"publication_year,omitempty"`
+		Name            string `json:"name"`
+		Edition         string `json:"edition"`
+		PublicationYear int    `json:"publication_year"`
 	}
 )

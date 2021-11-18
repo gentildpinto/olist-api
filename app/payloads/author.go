@@ -1,7 +1,7 @@
-package dto
+package payloads
 
 type (
-	Author struct {
+	CreateAuthorPayload struct {
 		Name string `json:"name" validate:"required"`
 	}
 )

@@ -1,8 +1,8 @@
 package book
 
 import (
-	"github.com/gentildpinto/olist-api/app/dto"
 	"github.com/gentildpinto/olist-api/app/model"
+	"github.com/gentildpinto/olist-api/app/payloads"
 )
 
 func All() (books []model.Book, err error) {
@@ -11,17 +11,17 @@ func All() (books []model.Book, err error) {
 	return
 }
 
-func Create(b dto.CreateBook) (newBook model.Book, err error) {
-	for _, author := range b.Authors {
+func Create(payload payloads.CreateBook) (newBook model.Book, err error) {
+	for _, author := range payload.Authors {
 		if _, err = (model.Author{}).FindByID(author); err != nil {
 			return model.Book{}, err
 		}
 	}
 
 	newBook = model.Book{
-		Name:            b.Name,
-		Edition:         b.Edition,
-		PublicationYear: b.PublicationYear,
+		Name:            payload.Name,
+		Edition:         payload.Edition,
+		PublicationYear: payload.PublicationYear,
 	}
 
 	if err = newBook.Create(); err != nil {
@@ -30,7 +30,7 @@ func Create(b dto.CreateBook) (newBook model.Book, err error) {
 
 	authorBook := model.AuthorBook{}
 
-	for _, author := range b.Authors {
+	for _, author := range payload.Authors {
 		if err = authorBook.Create(author, newBook.Base.ID); err != nil {
 			return model.Book{}, err
 		}
@@ -45,14 +45,14 @@ func FindByID(id string) (book model.Book, err error) {
 	return
 }
 
-func Update(id string, b dto.UpdateBook) (updatedBook model.Book, err error) {
+func Update(id string, payload payloads.UpdateBook) (updatedBook model.Book, err error) {
 	updatedBook, err = (model.Book{}).FindByID(id)
 
 	if err != nil {
 		return model.Book{}, err
 	}
 
-	if err = setPayloadValues(&updatedBook, b); err != nil {
+	if err = setPayloadValues(&updatedBook, payload); err != nil {
 		return model.Book{}, err
 	}
 

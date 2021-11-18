@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"reflect"
 
-	"github.com/gentildpinto/olist-api/app/dto"
 	"github.com/gentildpinto/olist-api/app/model"
+	"github.com/gentildpinto/olist-api/app/payloads"
 )
 
-func setPayloadValues(book *model.Book, payload dto.UpdateBook) (err error) {
+func setPayloadValues(book *model.Book, payload payloads.UpdateBook) (err error) {
 	reflectedPayload := reflect.ValueOf(payload)
 	typeOfStruct := reflectedPayload.Type()
 

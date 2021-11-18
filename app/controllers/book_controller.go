@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/gentildpinto/olist-api/app/dto"
+	"github.com/gentildpinto/olist-api/app/payloads"
 	book "github.com/gentildpinto/olist-api/app/services/book"
 	"github.com/labstack/echo/v4"
 )
@@ -28,7 +28,7 @@ var Book = struct {
 	},
 	Create: func() echo.HandlerFunc {
 		return func(c echo.Context) error {
-			bookDto := dto.CreateBook{}
+			bookDto := payloads.CreateBook{}
 
 			if err := c.Bind(&bookDto); err != nil {
 				return err
@@ -59,7 +59,7 @@ var Book = struct {
 	Update: func() echo.HandlerFunc {
 		return func(c echo.Context) error {
 			id := c.Param("id")
-			bookDto := dto.UpdateBook{}
+			bookDto := payloads.UpdateBook{}
 
 			if err := c.Bind(&bookDto); err != nil {
 				return err
