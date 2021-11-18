@@ -11,7 +11,7 @@ func All() (books []model.Book, err error) {
 	return
 }
 
-func Create(b dto.Book) (newBook model.Book, err error) {
+func Create(b dto.CreateBook) (newBook model.Book, err error) {
 	for _, author := range b.Authors {
 		if _, err = (model.Author{}).FindByID(author); err != nil {
 			return model.Book{}, err

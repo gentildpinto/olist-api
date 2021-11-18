@@ -26,7 +26,7 @@ var Book = struct {
 	},
 	Create: func() echo.HandlerFunc {
 		return func(c echo.Context) error {
-			bookDto := dto.Book{}
+			bookDto := dto.CreateBook{}
 
 			if err := c.Bind(&bookDto); err != nil {
 				return err
