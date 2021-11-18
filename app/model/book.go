@@ -34,3 +34,11 @@ func (Book) FindByID(id string) (book Book, err error) {
 	}
 	return
 }
+
+func (b *Book) Update() (err error) {
+	if err = logger.Log(databaseConnection.Save(&b).Error); err != nil {
+		return
+	}
+
+	return
+}

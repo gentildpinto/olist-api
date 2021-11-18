@@ -12,6 +12,7 @@ var Book = struct {
 	Index    func() echo.HandlerFunc
 	Create   func() echo.HandlerFunc
 	FindByID func() echo.HandlerFunc
+	Update   func() echo.HandlerFunc
 }{
 	Index: func() echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -52,6 +53,24 @@ var Book = struct {
 			}
 
 			return c.JSON(http.StatusOK, book)
+		}
+	},
+	Update: func() echo.HandlerFunc {
+		return func(c echo.Context) error {
+			id := c.Param("id")
+			bookDto := dto.UpdateBook{}
+
+			if err := c.Bind(&bookDto); err != nil {
+				return err
+			}
+
+			updatedBook, err := book.Update(id, bookDto)
+
+			if err != nil {
+				return err
+			}
+
+			return c.JSON(http.StatusOK, updatedBook)
 		}
 	},
 }
